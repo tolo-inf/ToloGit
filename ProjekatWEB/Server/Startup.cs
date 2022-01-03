@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using Models;
 
 namespace Server
 {
@@ -26,6 +28,30 @@ namespace Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<SajtContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("ProjekatCS"));
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CORS", builder =>
+                {
+                    builder.WithOrigins(new string[]
+                    {
+                        "http://localhost:8080",
+                        "https://localhost:8080",
+                        "http://127.0.0.1:8080",
+                        "https://127.0.0.1:8080",
+                        "http://127.0.0.1:5500",
+                        "http://localhost:5500",
+                        "https://127.0.0.1:5500",
+                        "https://localhost:5500"
+                    })
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -47,6 +73,8 @@ namespace Server
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("CORS");
 
             app.UseAuthorization();
 

@@ -10,6 +10,10 @@ namespace Models
         public int ID { get; set; }
 
         [Required]
+        [Range(1,2)]
+        public int IDProdavnice { get; set; }
+
+        [Required]
         [Range(1,200)]
         public int CenaIgre { get; set; }
 

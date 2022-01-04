@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace Server.Controllers
@@ -19,6 +20,18 @@ namespace Server.Controllers
             Context = context;
         }
 
-        
+        [Route("PreuzmiIgru")]
+        [HttpGet]
+        public async Task<ActionResult> PreuzmiIgru()
+        {
+            try
+            {
+                return Ok(await Context.Igre.Select(p => new { p.ID, p.Naziv, p.Zanr, p.GodinaIzlaska, p.Developer, p.Publisher }).ToListAsync());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            } 
+        }
     }
 }

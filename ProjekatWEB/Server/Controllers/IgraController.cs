@@ -33,5 +33,19 @@ namespace Server.Controllers
                 return BadRequest(e.Message);
             } 
         }
+
+        [Route("PreuzmiImeIgre")]
+        [HttpGet]
+        public async Task<ActionResult> PreuzmiImeIgre()
+        {
+            try
+            {
+                return Ok(await Context.Igre.Select(p => new { p.ID, p.Naziv }).ToListAsync());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            } 
+        }
     }
 }

@@ -26,5 +26,7 @@ namespace Models
         public int Graphics { get; set; }
 
         public Igra IgraFK { get; set; }
+
+        public Korisnik KorisnikFK { get; set; }
     }
 }

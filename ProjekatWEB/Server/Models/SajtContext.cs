@@ -12,6 +12,8 @@ namespace Models
 
         public DbSet<Nagrada> Nagrade { get; set; }
 
+        public DbSet<Korisnik> Korisnici { get; set; }
+
         public SajtContext(DbContextOptions options) : base(options)
         {
             

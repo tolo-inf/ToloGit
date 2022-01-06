@@ -20,13 +20,27 @@ namespace Server.Controllers
             Context = context;
         }
 
-        [Route("PreuzmiKolicinuProdatih")]
+        [Route("PreuzmiKolicinuProdatih/{idIgre}")]
         [HttpGet]
-        public async Task<ActionResult> PreuzmiKolicinuProdatih()
+        public async Task<ActionResult> PreuzmiKolicinuProdatih(int idIgre)
         {
+            if(idIgre <= 0)
+            {
+                return BadRequest("Nepostojeca igra!");
+            }
+
             try
             {
-                return Ok(await Context.Prodavnice.Select(p => new { p.ID, p.KolicinaProdatih }).ToListAsync());
+                int ukupnaKolicina = 0;
+                var igra = Context.Igre.Where(p => p.ID == idIgre).FirstOrDefault();
+                var prodavnica = await Context.Prodavnice.Where(p => p.IgraFK == igra).ToListAsync();
+                foreach (var p in prodavnica)
+                {
+                    ukupnaKolicina += p.KolicinaProdatih;
+                }
+                
+                return Ok(ukupnaKolicina);
+                //return Ok(await Context.Prodavnice.Select(p => new { p.ID, p.KolicinaProdatih }).ToListAsync());
             }
             catch (Exception e)
             {

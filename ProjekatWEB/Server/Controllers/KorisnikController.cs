@@ -20,13 +20,18 @@ namespace Server.Controllers
             Context = context;
         }
 
-        [Route("PreuzmiKorisnika")]
+        [Route("PreuzmiKorisnika/{id}")]
         [HttpGet]
-        public async Task<ActionResult> PreuzmiKorisnika()
+        public async Task<ActionResult> PreuzmiKorisnika(int id)
         {
-            try
+            if(id <= 0)
             {
-                return Ok(await Context.Korisnici.Select(p => new { p.ID, p.Username }).ToListAsync());
+                return BadRequest("Nepostojeci korisnik!");
+            }
+
+            try
+            {   return Ok(await Context.Korisnici.Where(p => p.ID == id).FirstOrDefaultAsync());
+                //return Ok(await Context.Korisnici.Select(p => new { p.ID, p.Username }).ToListAsync());
             }
             catch (Exception e)
             {

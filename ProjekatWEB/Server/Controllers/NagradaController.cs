@@ -20,13 +20,21 @@ namespace Server.Controllers
             Context = context;
         }
 
-        [Route("PreuzmiNagradu")]
+        [Route("PreuzmiNagradu/{idIgre}")]
         [HttpGet]
-        public async Task<ActionResult> PreuzmiNagradu()
+        public async Task<ActionResult> PreuzmiNagrade(int idIgre)
         {
+            if(idIgre <= 0)
+            {
+                return BadRequest("Nepostojeca igra!");
+            }
+            
             try
             {
-                return Ok(await Context.Nagrade.Select(p => new { p.ID, p.NazivOrg, p.Kategorija }).ToListAsync());
+                var igra = Context.Igre.Where(p => p.ID == idIgre).FirstOrDefault();
+                var nagrade = await Context.Nagrade.Where(p => p.IgraFK == igra).ToListAsync();
+                return Ok(nagrade);
+                //return Ok(await Context.Nagrade.Select(p => new { p.ID, p.NazivOrg, p.Kategorija }).ToListAsync());
             }
             catch (Exception e)
             {

@@ -20,7 +20,7 @@ namespace Server.Controllers
             Context = context;
         }
 
-        [Route("PreuzmiIgru")]
+        [Route("PreuzmiIgre")]
         [HttpGet]
         public async Task<ActionResult> PreuzmiIgre()
         {

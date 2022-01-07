@@ -7,7 +7,7 @@ fetch("https://localhost:5001/Igra/PreuzmiIgre")
 .then(p=>{
     p.json().then(igre=>{
         igre.forEach(igra => {
-            var p = new Igra(igra.id, igra.naziv, igra.zanr, igra.godinaIzlaska, igra.developer, igra.publisher, igra.ocene, igra.prodavnice, igra.nagrade);
+            var p = new Igra(igra.id, igra.naziv, igra.zanr, igra.godinaIzlaska, igra.developer, igra.publisher);
             listaIgara.push(p);
         })
 

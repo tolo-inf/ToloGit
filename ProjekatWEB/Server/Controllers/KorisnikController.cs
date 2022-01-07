@@ -39,9 +39,9 @@ namespace Server.Controllers
             } 
         }
 
-        [Route("DodatiPredmet")]
+        [Route("DodajKorisnikaBody")]
         [HttpPost]
-        public async Task<ActionResult> DodatiPredmet([FromBody] Korisnik korisnik)
+        public async Task<ActionResult> DodajKorisnikaBody([FromBody] Korisnik korisnik)
         {
             if (string.IsNullOrWhiteSpace(korisnik.Username) || korisnik.Username.Length > 50)
             {
@@ -53,6 +53,32 @@ namespace Server.Controllers
                 Context.Korisnici.Add(korisnik);
                 await Context.SaveChangesAsync();
                 return Ok($"Korisnik je dodat! ID je: {korisnik.ID}");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [Route("DodajKorisnika/{username}")]
+        [HttpPost]
+        public async Task<ActionResult> DodajKorisnika(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return BadRequest("Unesite korisnicko ime!");
+            }
+
+            try
+            {
+                Korisnik k = new Korisnik
+                {
+                    Username = username
+                };
+
+                Context.Korisnici.Add(k);
+                await Context.SaveChangesAsync();
+                return Ok("Uspešno upisan novi korisnik!");
             }
             catch (Exception e)
             {

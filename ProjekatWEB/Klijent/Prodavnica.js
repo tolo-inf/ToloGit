@@ -1,6 +1,6 @@
 export class Prodavnica{
 
-    constructor(imeIgre, cenaIgre, korpa, igraFK){
+    constructor(cenaIgre, korpa, igraFK){
         //this.id = id;
         this.idProdavnice = idProdavnice;
         this.cenaIgre = cenaIgre;

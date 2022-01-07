@@ -50,7 +50,7 @@ namespace Server.Controllers
 
         [Route("PromeniKolicinuProdatihBody")]
         [HttpPut]
-        public async Task<ActionResult> PromeniKolicinuProdatih([FromBody] Prodavnica prodavnica)
+        public async Task<ActionResult> PromeniKolicinuProdatihBody([FromBody] Prodavnica prodavnica)
         {
             if (prodavnica.ID <= 0)
             {
@@ -85,11 +85,11 @@ namespace Server.Controllers
             }
         }
 
-        [Route("PromeniKolicinuProdatih/{id}/{idP}/{korpa}")]
+        [Route("PromeniKolicinuProdatih/{idIgre}/{idP}/{korpa}")]
         [HttpPut]
-        public async Task<ActionResult> Promeni(int id, int idP, int korpa)
+        public async Task<ActionResult> PromeniKolicinuProdatih(int idIgre, int idP, int korpa)
         {
-            if (id <= 0)
+            if (idIgre <= 0)
             {
                 return BadRequest("Pogrešan ID!");
             }
@@ -104,7 +104,8 @@ namespace Server.Controllers
 
             try
             {
-                var prodavnica = Context.Prodavnice.Where(p => p.ID == id && p.IDProdavnice == idP).FirstOrDefault();
+                var igra = Context.Igre.Where(p => p.ID == idIgre).FirstOrDefault();
+                var prodavnica = Context.Prodavnice.Where(p => p.IgraFK == igra && p.IDProdavnice == idP).FirstOrDefault();
 
                 if (prodavnica != null)
                 {

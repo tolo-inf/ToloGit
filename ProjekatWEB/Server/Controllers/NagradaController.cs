@@ -20,7 +20,7 @@ namespace Server.Controllers
             Context = context;
         }
 
-        [Route("PreuzmiNagradu/{idIgre}")]
+        [Route("PreuzmiNagrade/{idIgre}")]
         [HttpGet]
         public async Task<ActionResult> PreuzmiNagrade(int idIgre)
         {

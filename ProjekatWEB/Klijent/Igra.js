@@ -7,7 +7,7 @@ export class Igra{
         this.godinaIzlaska = godinaIzlaska;
         this.developer = developer;
         this.publisher = publisher;
-        this.ocene = this.pribaviProsecnuOcenu(this.id);
+        this.ocene = this.pribaviProsecnuOcenu(id);
         //this.prodavnice = prodavnice;
         //this.nagrade = nagrade;
     }
@@ -36,9 +36,10 @@ export class Igra{
         el.innerHTML=this.ocene;
         tr.appendChild(el);
     }
-
+    //MORA DA SE PREPRAVI vracanje prosecne ocene - ne znam tacno gde
     pribaviProsecnuOcenu(idIgre)
     {
+        console.log(idIgre);
         //PreuzmiProsecnuOcenu/{idIgre}
         fetch("https://localhost:5001/Ocena/PreuzmiProsecnuOcenu/"+idIgre,
         {
@@ -46,11 +47,12 @@ export class Igra{
         }).then(s=>{
             if(s.ok)
             {
-                s.json().then(data=>
+                s.json().then(s=>
                     {
-                        return data;
-                    })
-                }
+                        console.log(s);
+                        return s;
+                    });
+            }
             })
     }
 }

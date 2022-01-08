@@ -7,7 +7,7 @@ export class Igra{
         this.godinaIzlaska = godinaIzlaska;
         this.developer = developer;
         this.publisher = publisher;
-        this.ocene = this.pribaviProsecnuOcenu(id);
+        //this.ocena = this.pribaviProsecnuOcenu(this.id);
         //this.prodavnice = prodavnice;
         //this.nagrade = nagrade;
     }
@@ -16,6 +16,9 @@ export class Igra{
        
         var tr = document.createElement("tr");
         host.appendChild(tr);
+
+        var prosecnaOcena = this.pribaviProsecnuOcenu(this.id);
+        console.log(prosecnaOcena);
 
         var el = document.createElement("td");
         el.innerHTML=this.naziv;
@@ -33,7 +36,7 @@ export class Igra{
         el.innerHTML=this.publisher;
         tr.appendChild(el);
         el = document.createElement("td");
-        el.innerHTML=this.ocene;
+        el.innerHTML=prosecnaOcena;
         tr.appendChild(el);
     }
     //MORA DA SE PREPRAVI vracanje prosecne ocene - ne znam tacno gde

@@ -126,10 +126,14 @@ namespace Server.Controllers
 
             var igra = Context.Igre.Where(p => p.ID == idIgre).FirstOrDefault();
             var korisnik = Context.Korisnici.Where(p => p.Username == username).FirstOrDefault();
+            if(korisnik == null)
+            {
+                return Forbid("Dati korisnik ne postoji.Morate se registrovati!");
+            }
             var ocenaPostoji = Context.Ocene.Where(p => p.IgraFK == igra && p.KorisnikFK == korisnik).FirstOrDefault();
             if(ocenaPostoji != null)
             {
-                return BadRequest("Korisnik je vec uneo ocenu za odabranu igru");
+                return BadRequest("Korisnik je vec uneo ocenu za odabranu igru!");
             }
             try
             {

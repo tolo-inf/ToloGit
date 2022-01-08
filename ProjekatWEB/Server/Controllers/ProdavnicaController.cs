@@ -31,15 +31,31 @@ namespace Server.Controllers
 
             try
             {
-                int ukupnaKolicina = 0;
                 var igra = Context.Igre.Where(p => p.ID == idIgre).FirstOrDefault();
-                var prodavnica = await Context.Prodavnice.Where(p => p.IgraFK == igra).ToListAsync();
-                foreach (var p in prodavnica)
-                {
-                    ukupnaKolicina += p.KolicinaProdatih;
-                }
-                
-                return Ok(ukupnaKolicina);
+                var prodavnica = await Context.Prodavnice.Where(p => p.IgraFK == igra).FirstOrDefaultAsync();
+                return Ok(prodavnica.KolicinaProdatih);
+                //return Ok(await Context.Prodavnice.Select(p => new { p.ID, p.KolicinaProdatih }).ToListAsync());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            } 
+        }
+
+        [Route("PreuzmiCenuIgre/{idIgre}")]
+        [HttpGet]
+        public async Task<ActionResult> PreuzmiCenuIgre(int idIgre)
+        {
+            if(idIgre <= 0)
+            {
+                return BadRequest("Nepostojeca igra!");
+            }
+
+            try
+            {
+                var igra = Context.Igre.Where(p => p.ID == idIgre).FirstOrDefault();
+                var prodavnica = await Context.Prodavnice.Where(p => p.IgraFK == igra).FirstOrDefaultAsync();
+                return Ok(prodavnica.CenaIgre);
                 //return Ok(await Context.Prodavnice.Select(p => new { p.ID, p.KolicinaProdatih }).ToListAsync());
             }
             catch (Exception e)
@@ -57,11 +73,6 @@ namespace Server.Controllers
                 return BadRequest("Pogrešan ID!");
             }
 
-            if (prodavnica.IDProdavnice < 1 && prodavnica.IDProdavnice > 2)
-            {
-                return BadRequest("Ne postoji prodavnica sa ovim ID-em!");
-            }
-
             if (prodavnica.CenaIgre < 0 || prodavnica.CenaIgre > 200)
             {
                 return BadRequest("Neodgovarajuca cena!");
@@ -77,7 +88,7 @@ namespace Server.Controllers
                 Context.Prodavnice.Update(prodavnica);
 
                 await Context.SaveChangesAsync();
-                return Ok($"Uspešno izmenjena kolicina prodatih kopija u prodavnici sa ID-em: {prodavnica.IDProdavnice}");
+                return Ok("Uspešno izmenjena kolicina prodatih kopija!");
             }
             catch (Exception e)
             {
@@ -85,17 +96,13 @@ namespace Server.Controllers
             }
         }
 
-        [Route("PromeniKolicinuProdatih/{idIgre}/{idP}/{korpa}")]
+        [Route("PromeniKolicinuProdatih/{idIgre}/{korpa}")]
         [HttpPut]
-        public async Task<ActionResult> PromeniKolicinuProdatih(int idIgre, int idP, int korpa)
+        public async Task<ActionResult> PromeniKolicinuProdatih(int idIgre, int korpa)
         {
             if (idIgre <= 0)
             {
                 return BadRequest("Pogrešan ID!");
-            }
-            if (idP <=0)
-            {
-                return BadRequest("Nepostojeca prodavnica!");
             }
             if (korpa <= 0)
             {
@@ -105,14 +112,14 @@ namespace Server.Controllers
             try
             {
                 var igra = Context.Igre.Where(p => p.ID == idIgre).FirstOrDefault();
-                var prodavnica = Context.Prodavnice.Where(p => p.IgraFK == igra && p.IDProdavnice == idP).FirstOrDefault();
+                var prodavnica = Context.Prodavnice.Where(p => p.IgraFK == igra).FirstOrDefault();
 
                 if (prodavnica != null)
                 {
                     prodavnica.KolicinaProdatih += korpa;
 
                     await Context.SaveChangesAsync();
-                    return Ok($"Uspešno izmenjena kolicina prodatih kopija u prodavnici sa ID-em: {prodavnica.IDProdavnice}");
+                    return Ok("Uspešno izmenjena kolicina prodatih kopija");
                 }
                 else
                 {

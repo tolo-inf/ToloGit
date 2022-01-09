@@ -4,46 +4,64 @@ import { Prodavnica } from "./Prodavnica.js";
 
 export class Sajt{
 
-    constructor(listaIgara){
+    constructor(naziv,listaIgara){
+        this.naziv = naziv;
         this.listaIgara = listaIgara;
         this.kontejner = null;
     }
     
     crtaj(host)
     {
-        this.kontejner=document.createElement("div");
-        this.kontejner.className="GlavniKontejner";
+        this.kontejner = document.createElement("div");
+        this.kontejner.className = "NajvisiKontejner";
         host.appendChild(this.kontejner);
+
+        let kontNaslov = document.createElement("div");
+        kontNaslov.className = "PomocniKontejner";
+        this.kontejner.appendChild(kontNaslov);
+        
+        let kontGlavni = document.createElement("div");
+        kontGlavni.className="GlavniKontejner";
+        this.kontejner.appendChild(kontGlavni);
+
+        let kontPomocni1 = document.createElement("div");
+        kontPomocni1.className = "PomocniKontejner";
+        kontGlavni.appendChild(kontPomocni1);
+
+        let kontPomocni2 = document.createElement("div");
+        kontPomocni2.className = "PomocniKontejner";
+        kontGlavni.appendChild(kontPomocni2);
 
         let kontForma1 = document.createElement("div");
         kontForma1.className="Forma1";
-        this.kontejner.appendChild(kontForma1);
+        kontPomocni1.appendChild(kontForma1);
 
         let kontForma2 = document.createElement("div");
         kontForma2.className="Forma2";
-        this.kontejner.appendChild(kontForma2);
-
-        let kontForma3 = document.createElement("div");
-        kontForma3.className="Forma3";
-        this.kontejner.appendChild(kontForma3);
+        kontPomocni1.appendChild(kontForma2);
+        
+        let kontKorpa = document.createElement("div");
+        kontKorpa.className="Korpa";
+        kontPomocni1.appendChild(kontKorpa);
 
         let kontIgra = document.createElement("div");
         kontIgra.className="Igra";
-        this.kontejner.appendChild(kontIgra);
-
-        let kontKorpa = document.createElement("div");
-        kontKorpa.className="Korpa";
-        this.kontejner.appendChild(kontKorpa);
+        kontPomocni2.appendChild(kontIgra);
 
         let kontNagrada = document.createElement("div");
         kontNagrada.className="Nagrada";
-        this.kontejner.appendChild(kontNagrada);
+        kontPomocni2.appendChild(kontNagrada);
+
+        let kontForma3 = document.createElement("div");
+        kontForma3.className="Forma3";
+        kontPomocni2.appendChild(kontForma3);
 
         let kontSlika = document.createElement("div");
         kontSlika.className="Slika";
-        this.kontejner.appendChild(kontSlika);
+        kontPomocni2.appendChild(kontSlika);
 
 
+        this.crtajNaslov(kontNaslov);
         this.crtajFormu1(kontForma1);
         this.crtajFormu2(kontForma2);
         this.crtajFormu3(kontForma3);
@@ -51,6 +69,15 @@ export class Sajt{
         this.crtajKorpu(kontKorpa);
         this.crtajNagradu(kontNagrada);
         this.crtajSliku(kontSlika);
+    }
+
+    crtajNaslov(host)
+    {
+        let red = this.crtajRed(host);
+
+        let l = document.createElement("h1");
+        l.innerHTML = this.naziv;
+        red.appendChild(l);
     }
 
     crtajFormu1(host)
@@ -62,18 +89,19 @@ export class Sajt{
         red.appendChild(l);
 
         let usernamePolje = document.createElement("input");
+        usernamePolje.className = "Polje";
         usernamePolje.type = "text";
         red.appendChild(usernamePolje);
 
         let btnRegistrujSe = document.createElement("button");
+        btnRegistrujSe.className = "Dugme";
         btnRegistrujSe.innerHTML="Registruj se";
         btnRegistrujSe.onclick=(ev)=>this.upisiKorisnika(usernamePolje.value);
         red.appendChild(btnRegistrujSe);
 
         red = this.crtajRed(host);
-        l = document.createElement("label");
-        l.className = "Naslov";
-        l.innerHTML = "Dodaj ocenu";
+        l = document.createElement("h2");
+        l.innerHTML = "Oceni";
         red.appendChild(l);
 
         red = this.crtajRed(host);
@@ -82,6 +110,7 @@ export class Sajt{
         red.appendChild(l);
 
         let igraSelect = document.createElement("select");
+        igraSelect.className = "Polje";
         igraSelect.id = "selectOcena";
         red.appendChild(igraSelect);
 
@@ -98,6 +127,7 @@ export class Sajt{
         l.innerHTML = "Gameplay:";
         red.appendChild(l);
         let gameplayPolje = document.createElement("input");
+        gameplayPolje.className = "Polje";
         gameplayPolje.type = "number";
         red.appendChild(gameplayPolje);
 
@@ -106,6 +136,7 @@ export class Sajt{
         l.innerHTML = "Story:";
         red.appendChild(l);
         let storyPolje = document.createElement("input");
+        storyPolje.className = "Polje";
         storyPolje.type = "number";
         red.appendChild(storyPolje);
 
@@ -114,6 +145,7 @@ export class Sajt{
         l.innerHTML = "Music:";
         red.appendChild(l);
         let musicPolje = document.createElement("input");
+        musicPolje.className = "Polje";
         musicPolje.type = "number";
         red.appendChild(musicPolje);
 
@@ -122,21 +154,25 @@ export class Sajt{
         l.innerHTML = "Graphics:";
         red.appendChild(l);
         let graphicsPolje = document.createElement("input");
+        graphicsPolje.className = "Polje";
         graphicsPolje.type = "number";
         red.appendChild(graphicsPolje);
 
         red = this.crtajRed(host);
         let btnDodajOcenu = document.createElement("button");
+        btnDodajOcenu.className = "Dugme";
         btnDodajOcenu.innerHTML="Dodaj";
         btnDodajOcenu.onclick=(ev)=>this.upisiOcenu(gameplayPolje.value,storyPolje.value,musicPolje.value,graphicsPolje.value);
         red.appendChild(btnDodajOcenu);
 
         let btnObrisiOcenu = document.createElement("button");
+        btnObrisiOcenu.className = "Dugme";
         btnObrisiOcenu.innerHTML = "Obrisi";
         btnObrisiOcenu.onclick=(ev)=>this.obrisiOcenu();
         red.appendChild(btnObrisiOcenu);
 
         let btnNagrade = document.createElement("button");
+        btnNagrade.className = "Dugme";
         btnNagrade.innerHTML = "Nagrade";
         btnNagrade.onclick=(ev)=>this.prikaziNagrade();
         red.appendChild(btnNagrade);
@@ -147,13 +183,18 @@ export class Sajt{
     {
         let red = this.crtajRed(host);
 
-        let l = document.createElement("label");
-        l.className = "Naslov";
+        let l = document.createElement("h2");
         l.innerHTML = "Prodavnica";
         red.appendChild(l);
 
         red = this.crtajRed(host);
+        
+        l = document.createElement("label");
+        l.innerHTML = "Igra:";
+        red.appendChild(l);
+
         let igraSelect = document.createElement("select")
+        igraSelect.className = "Polje";
         igraSelect.id = "selectProdavnica";
         red.appendChild(igraSelect);
 
@@ -166,16 +207,24 @@ export class Sajt{
         })
 
         red = this.crtajRed(host);
+        
+        l = document.createElement("label");
+        l.innerHTML = "Kolicina:"
+        red.appendChild(l);
+
         let kolicinaPolje = document.createElement("input");
+        kolicinaPolje.className = "Polje";
         kolicinaPolje.type = "number";
         red.appendChild(kolicinaPolje);
 
         let btnDodajUKorpu = document.createElement("button");
+        btnDodajUKorpu.className = "Dugme";
         btnDodajUKorpu.innerHTML = "Dodaj u korpu";
         btnDodajUKorpu.onclick=(ev)=>this.dodajUKorpu(kolicinaPolje.value);
         red.appendChild(btnDodajUKorpu);
 
         let btnKupi = document.createElement("button");
+        btnKupi.className = "Dugme";
         btnKupi.innerHTML = "Kupi";
         btnKupi.onclick=(ev)=>this.obaviKupovinu(kolicinaPolje.value);
         red.appendChild(btnKupi);
@@ -186,35 +235,33 @@ export class Sajt{
     {
         let red = this.crtajRed(host);
 
-        let l = document.createElement("label");
-        l.className = "Naslov";
-        l.innerHTML = "Najbolje:";
+        let l = document.createElement("h2");
+        l.innerHTML = "Prikazi omot";
         red.appendChild(l);
 
         red = this.crtajRed(host);
-
-        let radioOcena = document.createElement("input");
-        radioOcena.type = "radio";
-        radioOcena.id = "radioOcena";
-        red.appendChild(radioOcena);
-
+        
         l = document.createElement("label");
-        l.innerHTML = "Ocenjena";
+        l.innerHTML = "Igra:";
         red.appendChild(l);
 
-        let radioProdaja = document.createElement("input");
-        radioProdaja.type = "radio";
-        radioProdaja.id = "radioProdaja";
-        red.appendChild(radioProdaja);
+        let igraSelect = document.createElement("select")
+        igraSelect.className = "Polje";
+        igraSelect.id = "selectSlika";
+        red.appendChild(igraSelect);
 
-        l = document.createElement("label");
-        l.innerHTML = "Prodavana";
-        red.appendChild(l);
+        let opcija;
+        this.listaIgara.forEach(p => {
+            opcija = document.createElement("option");
+            opcija.innerHTML = p.naziv;
+            opcija.value = p.id;
+            igraSelect.appendChild(opcija);
+        })
 
-        red = this.crtajRed(host);
         let btnPrikazi = document.createElement("button");
+        btnPrikazi.className = "Dugme";
         btnPrikazi.innerHTML = "Prikazi";
-        //btnPrikazi.onclick=(ev)=>this.prikaziSliku();
+        btnPrikazi.onclick=(ev)=>this.prikaziSliku();
         red.appendChild(btnPrikazi);
 
     }
@@ -232,7 +279,7 @@ export class Sajt{
         tabelahead.appendChild(tr);
 
         var tabelaBody = document.createElement("tbody");
-        tabelaBody.className="TabelaPodaci";
+        tabelaBody.className="TabelaPodaciIgra";
         tabela.appendChild(tabelaBody);
 
         let th;
@@ -247,7 +294,6 @@ export class Sajt{
     crtajKorpu(host)
     {
         var tabela = document.createElement("table");
-        tabela.className="tabela";
         host.appendChild(tabela);
 
         var tabelahead= document.createElement("thead");
@@ -257,7 +303,7 @@ export class Sajt{
         tabelahead.appendChild(tr);
 
         var tabelaBody = document.createElement("tbody");
-        tabelaBody.className="TabelaPodaci";
+        tabelaBody.className="TabelaPodaciKorpa";
         tabela.appendChild(tabelaBody);
 
         let th;
@@ -282,7 +328,7 @@ export class Sajt{
         tabelahead.appendChild(tr);
 
         var tabelaBody = document.createElement("tbody");
-        tabelaBody.className="TabelaPodaci";
+        tabelaBody.className="TabelaPodaciNagrada";
         tabela.appendChild(tabelaBody);
 
         let th;
@@ -298,6 +344,7 @@ export class Sajt{
     {
         var slika = document.createElement("img");
         slika.className = "SlikaZaPrikaz";
+        slika.id = "slikaZaPrikaz";
         host.appendChild(slika);
     }
 
@@ -377,16 +424,12 @@ export class Sajt{
         var idIgre = igraOptionEl.options[igraOptionEl.selectedIndex].value;
         let usernameEl = this.kontejner.querySelector("input[type='text']");
         var usernameKorisnika = usernameEl.value;
-        //console.log(idIgre);
-        //console.log(usernameKorisnika);
 
         fetch("https://localhost:5001/Ocena/DodajOcenu/"+gameplay+"/"+story+"/"+music+"/"+graphics+"/"+idIgre+"/"+usernameKorisnika,
         {
             method:"POST"
         }).then( s=>
             {
-                //console.log(s.status);
-                //console.log(s);
                 if(s.status == 400)
                 {
                     alert("Korisnik je vec uneo ocenu za odabranu igru");
@@ -399,10 +442,10 @@ export class Sajt{
                 }
                 if (s.status == 200)
                 {
-                    var teloTabele = this.obrisiPrethodniSadrzaj();
+                    var teloTabele = this.obrisiPrethodniSadrzajIgra();
                     s.json().then(s=>
                     {
-                        const i = new Igra(s.id, s.naziv, s.zanr, s.godinaIzlaska, s.developer, s.publisher);
+                        const i = new Igra(s.id, s.naziv, s.zanr, s.godinaIzlaska, s.developer, s.publisher, s.prosecnaOcena);
                         i.crtaj(teloTabele);
                     });
                    
@@ -427,14 +470,38 @@ export class Sajt{
         }
     }
 
-    obrisiPrethodniSadrzaj()
+    obrisiPrethodniSadrzajIgra()
     {
-        var teloTabele = document.querySelector(".TabelaPodaci");
+        var teloTabele = document.querySelector(".TabelaPodaciIgra");
         var roditelj = teloTabele.parentNode;
         roditelj.removeChild(teloTabele);
 
         teloTabele = document.createElement("tbody");
-        teloTabele.className="TabelaPodaci";
+        teloTabele.className="TabelaPodaciIgra";
+        roditelj.appendChild(teloTabele);
+        return teloTabele;
+    }
+
+    obrisiPrethodniSadrzajKorpa()
+    {
+        var teloTabele = document.querySelector(".TabelaPodaciKorpa");
+        var roditelj = teloTabele.parentNode;
+        roditelj.removeChild(teloTabele);
+
+        teloTabele = document.createElement("tbody");
+        teloTabele.className="TabelaPodaciKorpa";
+        roditelj.appendChild(teloTabele);
+        return teloTabele;
+    }
+
+    obrisiPrethodniSadrzajNagrada()
+    {
+        var teloTabele = document.querySelector(".TabelaPodaciNagrada");
+        var roditelj = teloTabele.parentNode;
+        roditelj.removeChild(teloTabele);
+
+        teloTabele = document.createElement("tbody");
+        teloTabele.className="TabelaPodaciNagrada";
         roditelj.appendChild(teloTabele);
         return teloTabele;
     }
@@ -449,13 +516,10 @@ export class Sajt{
             method:"GET"
         }).then( s=>
             {
-                //console.log(s.status);
-                //console.log(s);
                if (s.status == 200)
                {
-                   var teloTabele = this.obrisiPrethodniSadrzaj();
+                   var teloTabele = this.obrisiPrethodniSadrzajNagrada();
                    s.json().then(data=>{
-                       //console.log(data);
                        data.forEach(s=>{
                            const n = new Nagrada(s.id, s.nazivOrg, s.kategorija, s.igraFK);
                            n.crtaj(teloTabele);
@@ -475,10 +539,22 @@ export class Sajt{
 
         let igraOptionEl = this.kontejner.querySelector("select[id='selectProdavnica']");
         var idIgre = igraOptionEl.options[igraOptionEl.selectedIndex].value;
+        var imeIgre = igraOptionEl.options[igraOptionEl.selectedIndex].innerHTML;
 
-        var teloTabele = this.obrisiPrethodniSadrzaj();
-        const prod = new Prodavnica(korpa,idIgre);
-        prod.crtaj(teloTabele);
+        var teloTabele = this.obrisiPrethodniSadrzajKorpa();
+        fetch("https://localhost:5001/Prodavnica/PreuzmiArtikl/"+idIgre,
+        {
+            method:"GET"
+        }).then(s=>{
+            if(s.ok)
+            {
+                s.json().then(s=>
+                    {
+                        const p = new Prodavnica(s.id, s.cenaIgre, s.kolicinaProdatih, korpa, imeIgre,s.igraFK);
+                        p.crtaj(teloTabele);
+                    })
+            }
+        })
 
     }
 
@@ -495,7 +571,7 @@ export class Sajt{
 
         fetch("https://localhost:5001/Prodavnica/PromeniKolicinuProdatih/"+idIgre+"/"+korpa,
         {
-            method:"POST"
+            method:"PUT"
         }).then(s=>{
             if(s.status == 200)
                 {
@@ -505,9 +581,13 @@ export class Sajt{
         })
     }
 
-    /*prikaziSliku()
-    {
+    prikaziSliku()
+    {   
+        let igraOptionEl = this.kontejner.querySelector("select[id='selectSlika']");
+        var idIgre = igraOptionEl.options[igraOptionEl.selectedIndex].value;
 
-    }*/
+        var slika = document.getElementById("slikaZaPrikaz");
+        slika.src = "../Slike/"+idIgre+".jpg";
+    }
 
 }

@@ -2,6 +2,26 @@
 {
     display: flex;
     flex-direction: row;
+    margin-bottom: 20px;
+}
+
+.PomocniKontejner
+{
+    display: flex;
+    flex-direction: column;
+    margin-right: 100px;
+}
+
+.NajvisiKontejner
+{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+.tabela
+{
+    margin-bottom: 30px;
 }
 
 table,tr,th, td{
@@ -11,7 +31,22 @@ table
 {
     border-collapse: collapse;
 }
-.Forma1, .Forma2, .Forma3, .Igra, .Korpa, .Nagrada, .Slika{
+.Forma1, .Forma2, .Forma3, .Igra, .Korpa, .Nagrada, .Slika
+{
     display: flex;
     flex-direction: column;
 }
+.red
+{
+    margin-bottom: 10px;
+}
+.Dugme
+{
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.Polje
+{
+    margin-left: 10px;
+}
+

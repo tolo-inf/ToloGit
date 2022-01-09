@@ -22,7 +22,7 @@ namespace Server.Controllers
 
         [Route("PreuzmiKolicinuProdatih/{idIgre}")]
         [HttpGet]
-        public async Task<ActionResult> PreuzmiKolicinuProdatih(int idIgre)
+        public async Task<ActionResult> PreuzmiKolicinuProdatih(int idIgre) // ne treba mi
         {
             if(idIgre <= 0)
             {
@@ -42,9 +42,9 @@ namespace Server.Controllers
             } 
         }
 
-        [Route("PreuzmiCenuIgre/{idIgre}")]
+        [Route("PreuzmiArtikl/{idIgre}")]
         [HttpGet]
-        public async Task<ActionResult> PreuzmiCenuIgre(int idIgre)
+        public async Task<ActionResult> PreuzmiArtikl(int idIgre)
         {
             if(idIgre <= 0)
             {
@@ -55,7 +55,7 @@ namespace Server.Controllers
             {
                 var igra = Context.Igre.Where(p => p.ID == idIgre).FirstOrDefault();
                 var prodavnica = await Context.Prodavnice.Where(p => p.IgraFK == igra).FirstOrDefaultAsync();
-                return Ok(prodavnica.CenaIgre);
+                return Ok(prodavnica);
                 //return Ok(await Context.Prodavnice.Select(p => new { p.ID, p.KolicinaProdatih }).ToListAsync());
             }
             catch (Exception e)
@@ -66,7 +66,7 @@ namespace Server.Controllers
 
         [Route("PromeniKolicinuProdatihBody")]
         [HttpPut]
-        public async Task<ActionResult> PromeniKolicinuProdatihBody([FromBody] Prodavnica prodavnica)
+        public async Task<ActionResult> PromeniKolicinuProdatihBody([FromBody] Prodavnica prodavnica) // ne treba mi
         {
             if (prodavnica.ID <= 0)
             {

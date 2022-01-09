@@ -22,7 +22,7 @@ namespace Server.Controllers
 
         [Route("PreuzmiKorisnika/{id}")]
         [HttpGet]
-        public async Task<ActionResult> PreuzmiKorisnika(int id)
+        public async Task<ActionResult> PreuzmiKorisnika(int id) // ne treba mi
         {
             if(id <= 0)
             {
@@ -41,7 +41,7 @@ namespace Server.Controllers
 
         [Route("DodajKorisnikaBody")]
         [HttpPost]
-        public async Task<ActionResult> DodajKorisnikaBody([FromBody] Korisnik korisnik)
+        public async Task<ActionResult> DodajKorisnikaBody([FromBody] Korisnik korisnik) // ne treba mi
         {
             if (string.IsNullOrWhiteSpace(korisnik.Username) || korisnik.Username.Length > 50)
             {

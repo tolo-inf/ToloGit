@@ -36,7 +36,7 @@ namespace Server.Controllers
 
         [Route("PreuzmiOdredjenuIgru/{id}")]
         [HttpGet]
-        public async Task<ActionResult> PreuzmiOdredjenuIgru(int id)
+        public async Task<ActionResult> PreuzmiOdredjenuIgru(int id) // ne treba mi
         {
             if(id <= 0)
             {
@@ -56,7 +56,7 @@ namespace Server.Controllers
 
         [Route("PreuzmiImeIgre/{id}")]
         [HttpGet]
-        public async Task<ActionResult> PreuzmiImeIgre(int id) 
+        public async Task<ActionResult> PreuzmiImeIgre(int id) // ne treba mi
         {
             if(id <= 0)
             {

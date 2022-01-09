@@ -22,7 +22,7 @@ namespace Server.Controllers
 
         [Route("PreuzmiProsecnuOcenu/{idIgre}")]
         [HttpGet]
-        public async Task<ActionResult> PreuzmiProsecnuOcenu(int idIgre)
+        public async Task<ActionResult> PreuzmiProsecnuOcenu(int idIgre) // ne treba mi
         {
             if(idIgre <= 0)
             {
@@ -46,7 +46,8 @@ namespace Server.Controllers
 
                 double prosek = ocena / ocene.Count;
                 double prosecnaOcena = Math.Round(prosek,2,MidpointRounding.ToEven);
-                return Ok(prosecnaOcena);
+                var pomObj = new {igra.ID,igra.Naziv,igra.Zanr,igra.GodinaIzlaska,igra.Developer,igra.Publisher,prosecnaOcena};
+                return Ok(pomObj);
             }
             catch (Exception e)
             {
@@ -56,7 +57,7 @@ namespace Server.Controllers
 
         [Route("DodatiOcenuBody")]
         [HttpPost]
-        public async Task<ActionResult> DodatiOcenuBody([FromBody] Ocena ocena)
+        public async Task<ActionResult> DodatiOcenuBody([FromBody] Ocena ocena) // ne treba mi
         {
             if (ocena.Gameplay < 1 || ocena.Gameplay > 5)
             {
@@ -148,7 +149,25 @@ namespace Server.Controllers
                 };
                 Context.Ocene.Add(o);
                 await Context.SaveChangesAsync();
-                return Ok(igra);
+
+                var ocene = await Context.Ocene.Where(p => p.IgraFK == igra).ToListAsync();
+                double ocena = 0;
+                foreach (var p in ocene)
+                {
+                    double pom = 0;
+                    pom += p.Gameplay;
+                    pom += p.Graphics;
+                    pom += p.Music;
+                    pom += p.Story;
+                    ocena += pom / 4;
+                }
+
+                double prosek = ocena / ocene.Count;
+                double prosecnaOcena = Math.Round(prosek,2,MidpointRounding.ToEven);
+                var pomObj = new {igra.ID,igra.Naziv,igra.Zanr,igra.GodinaIzlaska,igra.Developer,igra.Publisher,prosecnaOcena};
+                return Ok(pomObj);
+
+                //return Ok(igra);
             }
             catch (Exception e)
             {
@@ -158,7 +177,7 @@ namespace Server.Controllers
 
         [Route("PromeniOcenu")]
         [HttpPut]
-        public async Task<ActionResult> PromeniOcenu([FromBody] Ocena ocena)
+        public async Task<ActionResult> PromeniOcenu([FromBody] Ocena ocena) // ne treba mi
         {
             if (ocena.ID <= 0)
             {
@@ -204,7 +223,7 @@ namespace Server.Controllers
 
         [Route("IzbrisiOcenu/{id}")]
         [HttpDelete]
-        public async Task<ActionResult> IzbrisiOcenu(int id)
+        public async Task<ActionResult> IzbrisiOcenu(int id) // ne treba mi
         {
             if (id <= 0)
             {

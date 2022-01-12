@@ -34,7 +34,6 @@ namespace Server.Controllers
                 var igra = Context.Igre.Where(p => p.ID == idIgre).FirstOrDefault();
                 var nagrade = await Context.Nagrade.Where(p => p.IgraFK == igra).ToListAsync();
                 return Ok(nagrade);
-                //return Ok(await Context.Nagrade.Select(p => new { p.ID, p.NazivOrg, p.Kategorija }).ToListAsync());
             }
             catch (Exception e)
             {

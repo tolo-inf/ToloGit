@@ -364,15 +364,23 @@ export class Sajt{
             return;
         }
 
-        console.log(username);
         fetch("https://localhost:5001/Korisnik/DodajKorisnika/"+username,
         {
             method:"POST"
         })
-        .then
+        .then(s =>
         {
-            alert("Uspesno upisan novi korisnik!");
-        }
+            if(s.status == 400)
+            {
+                alert("Korisnik sa unetim korisnickim imenom vec postoji!");
+                return;
+            }
+            if(s.ok)
+            {
+               alert("Uspesno upisan novi korisnik!"); 
+            }
+            
+        })
     }
 
     upisiOcenu(gameplay,story,music,graphics)
@@ -425,6 +433,12 @@ export class Sajt{
         let usernameEl = this.kontejner.querySelector("input[type='text']");
         var usernameKorisnika = usernameEl.value;
 
+        if(usernameKorisnika == "" || usernameKorisnika == null)
+        {
+            alert("Unesite korisnicko ime!");
+            return;
+        }
+
         fetch("https://localhost:5001/Ocena/DodajOcenu/"+gameplay+"/"+story+"/"+music+"/"+graphics+"/"+idIgre+"/"+usernameKorisnika,
         {
             method:"POST"
@@ -435,7 +449,7 @@ export class Sajt{
                     alert("Korisnik je vec uneo ocenu za odabranu igru");
                     return;
                 }
-                if(s.status == 403)
+                if(s.status == 403 || s.status == 500)
                 {
                     alert("Dati korisnik ne postoji.Morate se registrovati!");
                     return;
@@ -456,23 +470,43 @@ export class Sajt{
 
     obrisiOcenu()
     {
-        let igraOptionEl2 = this.kontejner.querySelector("select[className='selectIgra']");
+        let igraOptionEl2 = this.kontejner.querySelector("select[id='selectOcena']");
         var idIgre2 = igraOptionEl2.options[igraOptionEl2.selectedIndex].value;
         let usernameEl2 = this.kontejner.querySelector("input[type='text']");
         var usernameKorisnika2 = usernameEl2.value;
 
+        if(idIgre2 <= 0 || idIgre2 == null)
+        {
+            alert("Morate izabrati igru!");
+            return;
+        }
+        if(usernameKorisnika2 == "" || usernameKorisnika2 == null)
+        {
+            alert("Unesite korisnicko ime!");
+            return;
+        }
+
         fetch("https://localhost:5001/Ocena/ObrisiOcenu/"+idIgre2+"/"+usernameKorisnika2,
         {
             method:"DELETE"
-        }).then
+        }).then(s =>
         {
-            alert("Uspesno obrisana ocena");
-        }
+            if(s.status == 400)
+            {
+                alert("Korisnik nije dao ocenu odabranoj igri!");
+                return;
+            }
+            if(s.ok)
+            {
+               alert("Uspesno obrisana ocena"); 
+            }
+            
+        })
     }
 
     obrisiPrethodniSadrzajIgra()
     {
-        var teloTabele = document.querySelector(".TabelaPodaciIgra");
+        var teloTabele = this.kontejner.querySelector(".TabelaPodaciIgra");
         var roditelj = teloTabele.parentNode;
         roditelj.removeChild(teloTabele);
 
@@ -484,7 +518,7 @@ export class Sajt{
 
     obrisiPrethodniSadrzajKorpa()
     {
-        var teloTabele = document.querySelector(".TabelaPodaciKorpa");
+        var teloTabele = this.kontejner.querySelector(".TabelaPodaciKorpa");
         var roditelj = teloTabele.parentNode;
         roditelj.removeChild(teloTabele);
 
@@ -496,7 +530,7 @@ export class Sajt{
 
     obrisiPrethodniSadrzajNagrada()
     {
-        var teloTabele = document.querySelector(".TabelaPodaciNagrada");
+        var teloTabele = this.kontejner.querySelector(".TabelaPodaciNagrada");
         var roditelj = teloTabele.parentNode;
         roditelj.removeChild(teloTabele);
 
@@ -504,6 +538,18 @@ export class Sajt{
         teloTabele.className="TabelaPodaciNagrada";
         roditelj.appendChild(teloTabele);
         return teloTabele;
+    }
+
+    obrisiPrethodniSadrzajSlika()
+    {
+        var mestoSlike = this.kontejner.querySelector(".SlikaZaPrikaz");
+        var roditelj = mestoSlike.parentNode;
+        roditelj.removeChild(mestoSlike);
+
+        mestoSlike = document.createElement("img");
+        mestoSlike.className = "SlikaZaPrikaz";
+        roditelj.appendChild(mestoSlike);
+        return mestoSlike;
     }
 
     prikaziNagrade()
@@ -586,7 +632,7 @@ export class Sajt{
         let igraOptionEl = this.kontejner.querySelector("select[id='selectSlika']");
         var idIgre = igraOptionEl.options[igraOptionEl.selectedIndex].value;
 
-        var slika = document.getElementById("slikaZaPrikaz");
+        var slika = this.obrisiPrethodniSadrzajSlika();
         slika.src = "../Slike/"+idIgre+".jpg";
     }
 

@@ -20,53 +20,18 @@ namespace Server.Controllers
             Context = context;
         }
 
-        [Route("PreuzmiKorisnika/{id}")]
-        [HttpGet]
-        public async Task<ActionResult> PreuzmiKorisnika(int id) // ne treba mi
-        {
-            if(id <= 0)
-            {
-                return BadRequest("Nepostojeci korisnik!");
-            }
-
-            try
-            {   return Ok(await Context.Korisnici.Where(p => p.ID == id).FirstOrDefaultAsync());
-                //return Ok(await Context.Korisnici.Select(p => new { p.ID, p.Username }).ToListAsync());
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            } 
-        }
-
-        [Route("DodajKorisnikaBody")]
-        [HttpPost]
-        public async Task<ActionResult> DodajKorisnikaBody([FromBody] Korisnik korisnik) // ne treba mi
-        {
-            if (string.IsNullOrWhiteSpace(korisnik.Username) || korisnik.Username.Length > 50)
-            {
-                return BadRequest("Neodgovarajuce korisnicko ime!");
-            }
-
-            try
-            {
-                Context.Korisnici.Add(korisnik);
-                await Context.SaveChangesAsync();
-                return Ok($"Korisnik je dodat! ID je: {korisnik.ID}");
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
         [Route("DodajKorisnika/{username}")]
         [HttpPost]
         public async Task<ActionResult> DodajKorisnika(string username)
         {
-            if (string.IsNullOrWhiteSpace(username))
+            if(string.IsNullOrWhiteSpace(username))
             {
                 return BadRequest("Unesite korisnicko ime!");
+            }
+            var korisnik = Context.Korisnici.Where(p => p.Username == username).FirstOrDefault();
+            if(korisnik != null)
+            {
+                return BadRequest("Korisnik sa unetim korisnickim imenom vec postoji u bazi!");
             }
 
             try

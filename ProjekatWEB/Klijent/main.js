@@ -18,5 +18,4 @@ fetch("https://localhost:5001/Igra/PreuzmiIgre")
         s2.crtaj(document.body);
     })
 })
-console.log(listaIgara);
 

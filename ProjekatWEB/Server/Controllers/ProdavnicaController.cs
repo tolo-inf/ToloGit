@@ -20,28 +20,6 @@ namespace Server.Controllers
             Context = context;
         }
 
-        [Route("PreuzmiKolicinuProdatih/{idIgre}")]
-        [HttpGet]
-        public async Task<ActionResult> PreuzmiKolicinuProdatih(int idIgre) // ne treba mi
-        {
-            if(idIgre <= 0)
-            {
-                return BadRequest("Nepostojeca igra!");
-            }
-
-            try
-            {
-                var igra = Context.Igre.Where(p => p.ID == idIgre).FirstOrDefault();
-                var prodavnica = await Context.Prodavnice.Where(p => p.IgraFK == igra).FirstOrDefaultAsync();
-                return Ok(prodavnica.KolicinaProdatih);
-                //return Ok(await Context.Prodavnice.Select(p => new { p.ID, p.KolicinaProdatih }).ToListAsync());
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            } 
-        }
-
         [Route("PreuzmiArtikl/{idIgre}")]
         [HttpGet]
         public async Task<ActionResult> PreuzmiArtikl(int idIgre)
@@ -56,44 +34,11 @@ namespace Server.Controllers
                 var igra = Context.Igre.Where(p => p.ID == idIgre).FirstOrDefault();
                 var prodavnica = await Context.Prodavnice.Where(p => p.IgraFK == igra).FirstOrDefaultAsync();
                 return Ok(prodavnica);
-                //return Ok(await Context.Prodavnice.Select(p => new { p.ID, p.KolicinaProdatih }).ToListAsync());
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             } 
-        }
-
-        [Route("PromeniKolicinuProdatihBody")]
-        [HttpPut]
-        public async Task<ActionResult> PromeniKolicinuProdatihBody([FromBody] Prodavnica prodavnica) // ne treba mi
-        {
-            if (prodavnica.ID <= 0)
-            {
-                return BadRequest("Pogrešan ID!");
-            }
-
-            if (prodavnica.CenaIgre < 0 || prodavnica.CenaIgre > 200)
-            {
-                return BadRequest("Neodgovarajuca cena!");
-            }
-
-            if(prodavnica.KolicinaProdatih < 0 || prodavnica.KolicinaProdatih > 1000000000)
-            {
-                return BadRequest("Neodgovarajuca kolicina!");
-            }
-
-            try
-            {
-                Context.Prodavnice.Update(prodavnica);
-
-                await Context.SaveChangesAsync();
-                return Ok("Uspešno izmenjena kolicina prodatih kopija!");
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
         }
 
         [Route("PromeniKolicinuProdatih/{idIgre}/{korpa}")]
